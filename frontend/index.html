@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-US">
+    <head> 
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href= "style.css"/>
+            <title> Collins Inventory</title>
+            
+
+    </head>
+
+    <body id = "bodyy">
+        <header class="header0">
+            <div class="title0"> 
+                <img src = "MemLogo_ca-favicon.png" width = "100px"/>
+                <h1> Tools inventory </h1>
+            </div>
+
+            <div class="title1">
+                <h2 id="title1"> Collins Aerospace </h2>
+            </div>
+        </header>
+
+        <main>   
+            <div class="options">
+                 <input 
+                    type="text" 
+                    id="inputSearch"
+                    placeholder ="Introduce an item" 
+                    required
+                    minlength="4"
+                    size="20"/>
+
+                 <button id="buttonAdd"> Add item </button>
+            </div>  
+               
+            
+        </main>
+        
+        <div class="form">
+            <table border="1" id="table0"> 
+                <thead>
+                    <tr>
+                        <th class = "sortable"> ID</th>
+                        <th class = "sortable"> Name </th>
+                        <th class = "sortable"> Category </th>
+                        <th class = "sortable"> Amount </th>
+                        <th class = "sortable"> State </th>
+                        <th class = "sortable"> Actions </th>
+                </tr>
+                </thead>
+                
+                <tbody id="tbody0">
+                    <!-- Here is going to be the data rows-->
+                </tbody>
+                
+                
+            </table>
+
+            <div class="form-right">
+                <label> Enter the tool below </label>
+                <input type="text" placeholder ="..." id="inputTool"/>
+                <label> Category </label>
+                <select id="select0">
+                    <option value="sel"> Select </option>
+                    <option value="electronica"> Electronics </option>
+                    <option value="mecanica"> mechanical </option>
+                    <option value="herramientas"> Tools </option>
+                    <option value="consumibles"> Consumable </option>
+                    <option value="seguridad"> Security </option>
+                </select> 
+
+                <label> Amount</label>
+                <input placeholder ="Enter the amount" id="inputAmount" type="number"/>
+                
+                
+                <div class="form-right-bottom">
+                    <button class="buttonHide"> Hide </button>
+                    <button class="buttonCreate"> Add item </button>
+                    <label class="warningLab"> Use correct values </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="divNot"> 
+            <label class="labelNot"> Tool eliminated </label>
+        </div>
+
+        <footer>
+            
+        </footer>
+
+
+        <script src = "code.js"> </script>
+    </body>
+</html>

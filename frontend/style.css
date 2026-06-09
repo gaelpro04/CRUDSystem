@@ -1,0 +1,301 @@
+body {
+    overflow-x: hidden;
+}
+
+.header0 {
+    border-bottom: 1px solid black;
+    padding: 1px;
+}
+
+.title0 {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+    padding: 5px;
+    gap: 13px;
+}
+
+.title1 {
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    position: relative;
+    bottom: 50px;
+    left: 120px;
+}
+
+.options {
+    display: flex;
+    gap: 30px;
+    padding: 13px;
+}
+
+.options input {
+    border-radius: 10px;
+    border: 1px solid;
+    height: 25px;
+    width: 300px;
+}
+
+.options button {
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+}
+
+th {
+    background-color: rgb(236,233,227);
+    border: 1px;
+    font-family:"Inter", sans-serif;
+    font-size: 15px;
+    padding: 5px;
+    width: 140px;
+
+}
+
+#table0 {
+    background-color: rgb(236,233,227);
+    border: 1px solid rgb(236,233,227);
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+}
+
+
+footer {
+    background-color: rgba(128, 128, 128, 0.486);
+    border: 1px;
+}
+
+.form {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.form-right {
+    opacity: 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 510px;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.form-right button {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+}
+
+.form-right.open {
+    opacity: 1;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.form-right.close {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.form-right input {
+    font-family: "Inter", sans-serif;
+    border-radius: 10px;
+    border: 1px solid;
+    height: 25px;
+    width: 300px;
+}
+
+.form-right label {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.warningLab {
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    color: red;
+    opacity: 0;
+}
+
+.warningLab.wrong {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: red;
+    opacity: 1;
+}
+
+.form-right select {
+    font-family: "Inter", sans-serif;
+    border-radius: 10px;
+    border: 1px solid;
+    height: 25px;
+}
+
+.form-right-bottom button {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+}
+
+.buttonHide.hide {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+    display: none;
+}
+
+.buttonCreate.hide {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+    display: none;
+}
+
+.buttonCancel.hide {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+    display: none;
+}
+
+.buttonConfirm.hide {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+    display: none;
+}
+
+.data {
+    background-color: white;
+    border-radius: 3px;
+    font-family: "Inter", sans-serif;
+    text-align: center;
+    height: 30px;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    margin: 10px;
+}
+
+.actions button {
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+}
+
+#warningLab {
+    color: red;
+    font-size: 10px;
+    text-decoration: wavy;
+    font-weight: 100;
+
+}
+
+.divW {
+    border: 1px solid #ffffff;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 100px;
+    width: 300px;
+    transform: translate(-50%, -250%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: none;
+    gap: 15px;
+}
+
+.divW.open {
+    display: flex;
+}
+
+.labelW {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+        display: flex;
+}
+
+.divContainer {
+    display: flex;
+    gap: 15px;
+}
+
+.divContainer button {
+    border: 0px;
+    border-radius: 10px;
+    width: 65px;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px  rgba(0,0,0,0.2);
+}
+
+.divNot {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    gap: 70px;
+    padding: 10px;
+    height: 80px;
+    width: 250px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translate(-120%, 120%);
+    transition: transform 0.3s ease;
+}
+
+.divNot.openAdd {
+    transform: translate(5%, 120%);
+    border: 1px solid green;
+}
+
+.divNot.openDel {
+    transform: translate(5%, 120%);
+    border: 1px solid red;
+}
+
+.divNot.openEdit {
+    transform: translate(5%, 120%);
+    border: 1px solid orange;
+}
+
+.divNot label {
+   font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    display: flex; 
+}
+
+
