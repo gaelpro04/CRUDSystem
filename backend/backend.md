@@ -216,4 +216,52 @@ CORS permite dar seguridad ente sesiones de peticiones entre cliente y servidor.
 CORS es la forma en que el navegador dice "tranquilo, si permito peticiones en este otro origen"
 
 
+# API y Express (Backend)
+
+Backend ocurrira toda la logica de datos, por lo tanto el frontens solamente seria por asi decirlo una "vista tonta" del contenido pero es en el backend donde los datos realmente tienen sentido.
+
+Para empezar un servidor o backend es necesario importar las librerias express y cors
+
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const port = 3000;
+
+app.use(cors());
+
+Posteriormente se utilizan de los siguientes metodos HTTP para hacer peticiones ya sea de cliente servidor o servidor a cliente
+
+app.get //Servidor nanda datos a cliente
+app.post //Cliente manda datos a servidor
+app.put //Cliente quiere cambiar datos a servidor
+app.delete //Cliente quiere eliminar un dato
+
+La sintaxis para un endpoint utilizando ademas un metodo mencionado es:
+
+app.get(endpoint, (req, res) => {
+  contenido
+});
+
+Algo a tener e cuenta es que req es para recibir datos de clientes y res para mandar datos a cliente. Para esto existe varias convenciones o canales de como se manda info.
+
+Por ejemplo req(recibe datos):
+
+req.param.id; viene de la url, se envian pequenios datos
+req.body; envia un JSON, puede ser un objeto o algo por el estilo
+req.query; Envia texto.
+
+Por ejemplo res(manda datos):
+
+res.json(contenido); //Envia objetos
+res.status(estado); envia estado o codigo de estado de la comunicacion
+res.send(); envia texto
+
+
+Para lanzar el backend es necesario 
+
+app.listen(port => console.log(`listening on port ${port}`))
+
+
+
+
 
