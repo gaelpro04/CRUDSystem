@@ -262,6 +262,20 @@ Para lanzar el backend es necesario
 app.listen(port => console.log(`listening on port ${port}`))
 
 
+# Base de datos 
+
+Para SQLite se intala con
+
+npm install better-sqlite3
+
+Es una API por lo tanto se declara la libreria en el backend como
+
+const database = require('better-sqlite3');
+const db = new Database('inventory.db');
+
+
+
+
 
 
 
