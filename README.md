@@ -4,7 +4,7 @@ A full-stack inventory management system for tracking tools and equipment across
 
 ## Preview
  
-![Tools Inventory Screenshot](./screenshot.png)
+![Tools Inventory Screenshot](frontend/logo_hexagono2.png)
 
 ## Features
  
