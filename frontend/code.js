@@ -1,51 +1,19 @@
-
-//Clase que permite modelar una herramienta
-class Tool {
-
-    //Constructor
-    constructor(id, name, category, amount) {
-        this._id = Number(id);
-        this._name = name;
-        this._category = category;
-        this._amount = Number(amount);
-        
-        //Se utiliza esta funcion para asignar en que estado se encuentra
-        //el stock de la herramienta
-        this.#calculateState(this._amount);
-    }
-
-    //Se especifica el meotod amount ya que se necesita calcular el estado
-    //de stock
-    set amount(_amount) {
-        this._amount = Number(_amount)
-        this.#calculateState(this._amount);
-    }
-
-
-    #calculateState(amount) {
-        if (amount >= 10) {
-           this._state = "available";
-        } else if (amount > 0) {
-            this._state = "low stock";
-        } else {
-            this._state = "not available";
-        }
-    }
-}
-
 let editingID = -1;
 //here is goint to be saved the items
  let tools = [];
+
 
 let inputTool = document.getElementById("inputTool");
 let select = document.getElementById("select0");
 let inputAmount = document.getElementById("inputAmount");
 
-let rawData = localStorage.getItem("tools");
-rawData = rawData ? JSON.parse(rawData) : [];
-for (let i = 0; i < rawData.length; ++i) {
-    tools.push(new Tool(getLastID() + 1, rawData[i]._name, rawData[i]._category, rawData[i]._amount));
-}
+init();
+
+// let rawData = localStorage.getItem("tools");
+// rawData = rawData ? JSON.parse(rawData) : [];
+// for (let i = 0; i < rawData.length; ++i) {
+//     tools.push(new Tool(getLastID() + 1, rawData[i]._name, rawData[i]._category, rawData[i]._amount));
+// }
 
 
 let tbody = document.querySelector("#tbody0");
@@ -55,7 +23,6 @@ tbody.addEventListener("click", handletbody);
  buttonAdd.addEventListener("click", handleAddItem);
 
  let buttonHide = document.querySelector(".buttonHide");
- console.log(buttonHide);
  buttonHide.addEventListener("click", handleHideItem);
 
  let buttonCreate = document.querySelector(".buttonCreate");
@@ -104,7 +71,18 @@ divContainer.append(buttonWNo);
 divWarning.append(divContainer);
 
 let divNot = document.querySelector(".divNot");
-updateTable(tools);
+
+
+async function init() {
+    tools = await getTools();
+    updateTable(tools);
+}
+
+async function getTools() {
+    const res = await fetch(`http://localhost:3000/tools`);
+    tools = await res.json();
+    return tools;
+}
 
 function notification(typeNoti, toolName) {
 
@@ -133,29 +111,24 @@ function handleInputSearch() {
     updateTable(toolsTemp);
 }
 
-function handletbody(event) {
+async function handletbody(event) {
     const button = event.target.closest("button");
     if (!button) return;
 
     let id = event.target.closest("tr").dataset.id;
     id = Number(id);
 
-    console.log(id);
-    let tool = getTool(id);
-    console.log(tool);
+    let tool = await getTool(id);
     editingID = id;
     
     //En vez de usar className == "btnEditar" ya que me dara un string de
     //todas las clases con btnEditar
     if (button.classList.contains("btnEditar")) {
-        console.log("Si entro edit");
         let form = document.querySelector(".form-right");
 
         form.classList.add("open");
         form.classList.remove("close");
 
-        console.log(inputTool.value);
-        console.log(tool._name)
         inputTool.value = tool._name;
         let valueTemp;
         
@@ -189,25 +162,20 @@ function handletbody(event) {
     }
 }
 
-function handleYes(event, id) {
-    console.log("id:", id, typeof id);
-    let tool = getTool(id);
-    console.log("ejemplo _id:", tools[0]._id, typeof tools[0]._id);
-    deleteTool(tool, id);
-    console.log("LISTA ACTUAL: ");
+async function handleYes(event, id) {
+    let tool = await getTool(id);
+    await deleteTool(id);
     for (let tool of tools) {
-        console.log(tool);
     }
     divWarning.classList.remove("open");
     notification("delete", tool._name);
-    updateTable(tools);
 } 
 
 
-function deleteTool(tool, id) {
-    //Deleting content on localStorage
-    tools = tools.filter(t => t._id !== id);
-    localStorage.setItem("tools", JSON.stringify(tools));
+async function deleteTool(id) {
+    await fetch(`http://localhost:3000/tools/${id}`, {method: "DELETE"});
+    tools = await getTools();
+    updateTable(tools);
 }
 
 function handleNo() {
@@ -225,15 +193,12 @@ function handleCancel(event) {
     inputAmount.value = "";
 }
 
-function handleConfirm(event, id) {
+async function handleConfirm(event, id) {
     
     let allGood = true;
-    let tool = getTool(id);
+    let tool = await getTool(id);
 
-    console.log(tool._category);
-    console.log(select.selectedOptions[0].text);
-    if ((inputTool.value.length < 4 || inputTool.value == tool._name) && (select.value == "sel" || tool._category == select.selectedOptions[0].text) && (inputAmount.value < 0 || tool._amount == inputAmount.value)) {
-        console.log(inputTool.value);
+    if ((inputTool.value.length < 4 || inputTool.value === tool._name) && (select.value == "sel" || tool._category === select.selectedOptions[0].text) && (inputAmount.value < 0 || Number(tool._amount) === Number(inputAmount.value))) {
         allGood = false;
     } 
 
@@ -241,32 +206,44 @@ function handleConfirm(event, id) {
         let label = document.querySelector(".warningLab");
         label.textContent = "Still being the same data";
         label.classList.toggle("wrong");
-        console.log("Sigo aqui");
     } else {
-        console.log(inputTool.value);
-        console.log(select.value);
-        console.log(inputAmount.value);
 
         tool._name = inputTool.value;
         tool._category = select.selectedOptions[0].text;
         tool.amount = inputAmount.value;
         
-        notification("edited", tool._name);
-        localStorage.setItem("tools", JSON.stringify(tools));
+
+        const newTool = {
+            _name: inputTool.value,
+            _category: select.selectedOptions[0].text,
+            _amount: inputAmount.value
+        };
+        
+        notification("edited", newTool._name);
+        await modifyTool(newTool, id);
+        tools = await getTools();
         updateTable(tools);
 
     }
 }
 
-function getTool(id) {
+async function modifyTool(tool, id) {
+    
+    await fetch(`http://localhost:3000/tools/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tool)
+    });
 
-    for (let tool of tools) {
-        if (tool._id == id) {
-            return tool;
-        }
-    }
+    tools = await getTools();
+    updateTable(tools);
+}
 
-    return null;
+async function getTool(id) {
+
+    const res = await fetch(`http://localhost:3000/tools/${id}`);
+    let tool = await res.json();
+    return tool;
 }
 
 function updateTable(toolsTemp) {
@@ -303,7 +280,6 @@ function updateTable(toolsTemp) {
 
 
 function handleAddItem() {
-    console.log("button add entro");
     let form = document.querySelector(".form-right");
 
     form.classList.add("open");
@@ -312,7 +288,6 @@ function handleAddItem() {
  }
 
  function handleHideItem() {
-    console.log("button hide entro");
     let form = document.querySelector(".form-right");
     form.classList.add("close");
     form.classList.remove("open");
@@ -324,22 +299,19 @@ function handleAddItem() {
     inputAmount.value = "";
  }
 
- function handleCreateItem() {
+async function handleCreateItem() {
 
     let allGood = true;
 
     if (inputTool.value.length < 4) {
-        console.log(inputTool.value);
         allGood = false;
     } 
 
     if (select.value == "sel") {
-        console.log(select.value);
         allGood = false;
     }
 
     if (inputAmount.value < 0) {
-        console.log(select.value);
         allGood = false;
     }
 
@@ -348,12 +320,8 @@ function handleAddItem() {
     if (!allGood) {
         let label = document.querySelector(".warningLab");
         label.classList.add("wrong");
-        console.log("Sigo aqui");
     } else {
         inputAmount.value = Number(inputAmount.value);
-        console.log(inputTool.value);
-        console.log(select.value);
-        console.log(inputAmount.value);
 
         notification("add", inputTool.value);
         addToTools(inputTool.value, select.selectedOptions[0].text, inputAmount.value);
@@ -362,25 +330,20 @@ function handleAddItem() {
 
  //DATA
  //Functions that allows add tools to the tools
- function addToTools(input, select, amount) {
-    let newTool = new Tool(getLastID() + 1, input, select, amount);
+ async function addToTools(input, select, amount) {
+    const newTool = {
+        _name: input,
+        _category: select,
+        _amount: amount
+    };
 
-    console.log("que pedo we");
-    for (const tool of tools) {
-        console.log(newTool._name + " | " + tool._name);
-        if (newTool._name == tool._name) {
-            tool.amount = Number(tool._amount) + Number(newTool._amount);
-            console.log("tu nomero:")
-            //Editing content on localStorage
-            updateTable(tools);
-            localStorage.setItem("tools", JSON.stringify(tools));
-            return;
-        }
-    }
+    await fetch(`http://localhost:3000/tools`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTool)
+    });
 
-    tools.push(newTool);
-    //Saving content on localStorage
-    localStorage.setItem("tools", JSON.stringify(tools));
+    tools = await getTools();
     updateTable(tools);
  }
 
@@ -389,12 +352,10 @@ function handleAddItem() {
     
     let id = -1;
     let tool = tools.pop();
-    console.log(tool);
 
     if (tool != null) {
         id = tool._id;
         tools.push(tool);
     }
-    console.log(id);
     return Number(id);
  }
