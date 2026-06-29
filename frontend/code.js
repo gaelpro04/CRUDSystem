@@ -1,3 +1,8 @@
+const API_BASE =
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3001"
+    : "https://your-backend.onrender.com";
+
 let editingID = -1;
 //here is goint to be saved the items
  let tools = [];
@@ -79,7 +84,7 @@ async function init() {
 }
 
 async function getTools() {
-    const res = await fetch(`http://localhost:3000/tools`);
+    const res = await fetch(`${API_BASE}/tools`);
     tools = await res.json();
     return tools;
 }
@@ -173,7 +178,7 @@ async function handleYes(event, id) {
 
 
 async function deleteTool(id) {
-    await fetch(`http://localhost:3000/tools/${id}`, {method: "DELETE"});
+    await fetch(`${API_BASE}/tools/${id}`, {method: "DELETE"});
     tools = await getTools();
     updateTable(tools);
 }
@@ -229,7 +234,7 @@ async function handleConfirm(event, id) {
 
 async function modifyTool(tool, id) {
     
-    await fetch(`http://localhost:3000/tools/${id}`, {
+    await fetch(`${API_BASE}/tools/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tool)
@@ -241,7 +246,7 @@ async function modifyTool(tool, id) {
 
 async function getTool(id) {
 
-    const res = await fetch(`http://localhost:3000/tools/${id}`);
+    const res = await fetch(`${API_BASE}/tools/${id}`);
     let tool = await res.json();
     return tool;
 }
@@ -337,7 +342,7 @@ async function handleCreateItem() {
         _amount: amount
     };
 
-    await fetch(`http://localhost:3000/tools`, {
+    await fetch(`${API_BASE}/tools`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTool)
